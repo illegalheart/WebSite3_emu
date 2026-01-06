@@ -1,0 +1,113 @@
+.app-container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+}
+
+.header {
+    height: 70px;
+    padding: 0 var(--spacing-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header h1 {
+    margin: 0;
+    font-weight: 800;
+    font-size: var(--font-size-xl);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.main-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+}
+
+.main-content:fullscreen {
+    padding: 0;
+    border-radius: 0;
+    background: #000;
+}
+
+.main-content:fullscreen .emulator-screen-container {
+    border-radius: 0;
+}
+
+.dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: var(--spacing-xl);
+}
+
+.control-group {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text-main);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--color-primary);
+}
+
+.stop-btn {
+    background: rgba(248, 7, 89, 0.2);
+    border: 1px solid var(--color-accent);
+    color: var(--color-text-main);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.stop-btn:hover {
+    background: var(--color-accent);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

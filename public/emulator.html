@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulator Core</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #game {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width:100%;height:100%;max-width:100%">
+        <div id="game"></div>
+    </div>
+
+    <script>
+        // Default configuration
+        window.EJS_player = '#game';
+        window.EJS_core = 'gba'; // default
+        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+
+        // Listen for configuration from parent
+        window.addEventListener('message', (event) => {
+            const { type, payload } = event.data;
+
+            if (type === 'LOAD_GAME') {
+                const { romUrl, core, name } = payload;
+                if (!romUrl) return;
+
+                console.log('Loading game:', name, core);
+
+                // Reset and Configure
+                // We might need to reload the page to clear previous instance properly
+                // providing a clean way to start fresh.
+                // For now, let's assume one game per iframe load or we construct config object.
+
+                window.EJS_core = core;
+                window.EJS_gameUrl = romUrl;
+
+                if (!document.getElementById('ejs-loader')) {
+                    const script = document.createElement('script');
+                    script.id = 'ejs-loader';
+                    script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+                    document.body.appendChild(script);
+                } else {
+                    // Force reload for now to change game correctly
+                    window.location.reload();
+                }
+            }
+
+            if (type === 'SAVE_STATE') {
+                try {
+                    // EmulatorJS internal API for saving state
+                    // This might vary on version, but usually exposed via gameManager
+                    console.log('Saving state...');
+                    // Try simulating 'F2' or using exposed API if available
+                    // Using EJS_emulator instance if accessible
+                    if (window.EJS_emulator) {
+                        window.EJS_emulator.saveState();
+                        window.parent.postMessage({ type: 'TOAST', payload: { message: 'State Saved!', type: 'success' } }, '*');
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            if (type === 'LOAD_STATE') {
+                try {
+                    console.log('Loading state...');
+                    if (window.EJS_emulator) {
+                        window.EJS_emulator.loadState();
+                        window.parent.postMessage({ type: 'TOAST', payload: { message: 'State Loaded!', type: 'success' } }, '*');
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        });
+
+        // Signal ready
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'EMULATOR_READY' }, '*');
+        }
+    </script>
+</body>
+
+</html>

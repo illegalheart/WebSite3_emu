@@ -39,14 +39,6 @@ function App() {
     setCurrentRom(null)
   }
 
-  const handleSave = () => {
-    screenRef.current?.saveState();
-  }
-
-  const handleLoad = () => {
-    screenRef.current?.loadState();
-  }
-
   const handleFullscreen = () => {
     const mainElement = document.querySelector('.main-content');
     if (mainElement) {
@@ -67,8 +59,6 @@ function App() {
         <div className="header-actions">
           {isPlaying && (
             <div className="control-group">
-              <button className="action-btn" onClick={handleSave}>💾 Save</button>
-              <button className="action-btn" onClick={handleLoad}>📂 Load</button>
               <button className="action-btn" onClick={handleFullscreen}>📺 Maximize</button>
               <button className="stop-btn" onClick={handleStop}>Stop Game</button>
             </div>

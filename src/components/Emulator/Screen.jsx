@@ -1,21 +1,12 @@
-import { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Emulator.css';
 
-const Screen = forwardRef(({ romFile, core, onReady }, ref) => {
+const Screen = ({ romFile, core, onReady }) => {
     const iframeRef = useRef(null);
     const [isReady, setIsReady] = useState(false);
 
     // When props change, we reload the iframe to ensure clean state
     const [key, setKey] = useState(0);
-
-    useImperativeHandle(ref, () => ({
-        saveState: () => {
-            iframeRef.current?.contentWindow.postMessage({ type: 'SAVE_STATE' }, '*');
-        },
-        loadState: () => {
-            iframeRef.current?.contentWindow.postMessage({ type: 'LOAD_STATE' }, '*');
-        }
-    }));
 
     useEffect(() => {
         setKey(k => k + 1);
@@ -64,6 +55,6 @@ const Screen = forwardRef(({ romFile, core, onReady }, ref) => {
             {!isReady && <div className="loading-overlay">Initializing Core...</div>}
         </div>
     );
-});
+};
 
 export default Screen;
